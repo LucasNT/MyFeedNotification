@@ -1,30 +1,26 @@
-package useCase
+package usecase
 
 import (
-	"os"
-	"path"
+	"context"
 	"strings"
 
-	"github.com/adrg/xdg"
+	"github.com/LucasNT/MyFeed/internal/adapters/mocks"
+	"github.com/LucasNT/MyFeed/internal/entities"
 )
 
-func (feed *Feed) convertUrlToPath() (string, error) {
-	var dataFolder string = path.Join(xdg.DataHome, "myFeedNotificator")
-	err := os.Mkdir(dataFolder, 0700)
-	if err != nil && !os.IsExist(err) {
-		return "", err
+func convertFeedToNotificationMessage(ctx context.Context, feed entities.Feed, appName string) (mocks.NotificationMessage, error) {
+	var sb strings.Builder
+	sb.WriteString("<a href=\"")
+	sb.WriteString(feed.LinkToPage.String())
+	sb.WriteString("\">")
+	sb.WriteString(feed.Body)
+	sb.WriteString("<\\a>")
+	ret := mocks.NotificationMessage{
+		Title:   feed.Title,
+		AppName: appName,
+		Level:   feed.Level,
+		Summary: sb.String(),
 	}
-	filePath := feed.FeedUrl.Hostname() + "/" + feed.FeedUrl.Path
-	filePath = path.Clean(filePath)
-	filePath = strings.ReplaceAll(filePath, "/", "%")
-	filePath = strings.ReplaceAll(filePath, ":", "-")
-	filePath = strings.ReplaceAll(filePath, ">", "-")
-	filePath = strings.ReplaceAll(filePath, "<", "-")
-	filePath = strings.ReplaceAll(filePath, "\"", "-")
-	filePath = strings.ReplaceAll(filePath, "\\", "-")
-	filePath = strings.ReplaceAll(filePath, "|", "-")
-	filePath = strings.ReplaceAll(filePath, "?", "-")
-	filePath = strings.ReplaceAll(filePath, "*", "-")
-	filePath = path.Join(dataFolder, filePath)
-	return filePath, nil
+	return ret, nil
+
 }

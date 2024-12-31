@@ -10,14 +10,16 @@ type Feed struct {
 	Body       string
 	Time       time.Time
 	LinkToPage *url.URL
+	Level      int
 }
 
-func NewFeed(title string, body string, time time.Time, linkToPage *url.URL) *Feed {
-	ret := new(Feed)
+func NewFeed(title string, body string, time time.Time, linkToPage *url.URL, level int) Feed {
+	var ret Feed
 	ret.Title = title
 	ret.Body = body
 	ret.Time = time
 	ret.LinkToPage = linkToPage
+	ret.Level = level
 	return ret
 }
 
