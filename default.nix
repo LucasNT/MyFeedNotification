@@ -5,7 +5,7 @@ pkgs.buildGoModule {
   version = "v1.0";
 
   src = path;
-  buildInputs = [ libnotify ];
+  nativeBuildInputs = [ libnotify ];
 
   vendorHash = "sha256-zZLQ2laQTjB6bFfrhqtnFSWwJCd1Gb+0LmPc5a3rtro=";
 }
