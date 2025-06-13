@@ -6,10 +6,8 @@
     in {
       packages.x86_64-linux.my_feed_notification =
         pkgs.callPackage ./default.nix { path = "${self}"; };
-      devShell.x86_64-linux = pkgs.callPackage ./default.nix {
-        path = "${self}";
-        dev-shell = true;
-      };
+      devShell.x86_64-linux =
+        pkgs.callPackage ./default.nix { path = "${self}"; };
       packages.x86_64-linux.default =
         self.packages.x86_64-linux.my_feed_notification;
 
